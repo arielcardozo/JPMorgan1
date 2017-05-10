@@ -2,6 +2,7 @@ package com.jpmg.common;
 
 import java.math.*;
 import java.time.*;
+import java.util.*;
 
 public class Instruction {
     private Entity entity;
@@ -9,10 +10,12 @@ public class Instruction {
     private BuySellFlag bsf;
     private BigDecimal bAgreed;
     private Currency currency;
-    private LocalDate  instructionDate;
+    private LocalDate instructionDate;
     private LocalDate settlementDate;
+    private LocalDate adjSettlementDate;
     private int iUnits;
     private BigDecimal pricePUnit;
+    private BigDecimal amountTrade;
     public Instruction() {
     }
 	/**
@@ -29,6 +32,7 @@ public class Instruction {
 			Currency currency, LocalDate instructionDate, LocalDate settlementDate,
 			int iUnits, BigDecimal pricePUnit) {
 		super();
+		Locale.setDefault(Locale.FRANCE);
 		this.entity = entity;
 		this.bsf = bsf;
 		this.bAgreed = bAgreed;
@@ -37,6 +41,31 @@ public class Instruction {
 		this.settlementDate = settlementDate;
 		this.iUnits = iUnits;
 		this.pricePUnit = pricePUnit;
+	}
+	
+	/**
+	 * @return the adjSettlementDate
+	 */
+	public synchronized LocalDate getAdjSettlementDate() {
+		return adjSettlementDate;
+	}
+	/**
+	 * @param adjSettlementDate the adjSettlementDate to set
+	 */
+	public synchronized void setAdjSettlementDate(LocalDate adjSettlementDate) {
+		this.adjSettlementDate = adjSettlementDate;
+	}
+	/**
+	 * @return the amountTrade
+	 */
+	public synchronized BigDecimal getAmountTrade() {
+		return amountTrade;
+	}
+	/**
+	 * @param amountTrade the amountTrade to set
+	 */
+	public synchronized void setAmountTrade(BigDecimal amountTrade) {
+		this.amountTrade = amountTrade;
 	}
 	/**
 	 * @return the entity

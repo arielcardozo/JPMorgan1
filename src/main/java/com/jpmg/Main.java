@@ -1,13 +1,17 @@
 package com.jpmg;
 
+import java.math.*;
 import java.nio.file.*;
+import java.time.*;
+import java.util.*;
 
+import com.jpmg.common.*;
 import com.jpmg.core.*;
 
 public class Main {
     public static void main(String[] args) {
         if(args.length != 1) {
-            System.out.println("Incorrect number of commandline arguments. Please refer to README.md file.");
+            System.out.println("Incorrect number of arguments. Please refer to README.md file.");
             System.exit(1);
         }
 
@@ -17,7 +21,6 @@ public class Main {
         }
 
         String stockDataFile = args[0];
-//        String notificationsFile = args[1];
 
         MarketReport market = MarketReport.getSalesEngine();
 
@@ -27,12 +30,19 @@ public class Main {
             System.exit(1);
         }
 
-//        List<Message> messages = market.parse(notificationsFile);
-//        if(messages == null) {
-//            System.out.println("Sale notifications' parsing failed. Check console. Inform developer.");
-//            System.exit(1);
-//        }
-
+        Map<LocalDate,Map<String,BigDecimal>> lReport = market.amountProcess();
+        if(lReport == null) {
+            System.out.println("Instructions reports' process failed. Check console. Inform developer.");
+            System.exit(1);
+        }
+        
+        
+        market.entityRanking();
+        System.out.println("Amount in USD settled' per day (incoming/outgoing)");
+        market.printingAmounts(lReport);
+        System.out.println("Ranking of entities");
+        List<Instruction> lIns = market.entityRanking();
+        market.printingSettled(lIns);
         
     }
 
